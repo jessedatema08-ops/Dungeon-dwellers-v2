@@ -1,0 +1,1 @@
+Dungeon Dwellers V2 final operational rewrite: authoritative structured character mechanics, AI-gated combat, persistent tactical/world maps without fog, long-term compact campaign memory, player-owned verified rolls, rests/reactions/death saves, equipment/trading, campaign backup/restore, and free-tier-conscious Supabase state.

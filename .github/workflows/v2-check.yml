@@ -1,0 +1,40 @@
+name: Dungeon Dwellers V2 checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: |
+          for f in production-app.js supabase-client.js ai-provider.js campaign-manager.js community-chat.js character-system.js character-importer.js map-engine.js map-ai-integration.js interaction-ui.js v2-provider.js v2-rules.js v2-runtime.js v2-initiative.js v2-combat.js v2-backup.js v2-character-ui.js worker/src/index.js; do
+            node --check "$f"
+          done
+      - name: HTML integrity
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.ids=[]; self.scripts=[]
+              def handle_starttag(self, tag, attrs):
+                  a=dict(attrs)
+                  if 'id' in a: self.ids.append(a['id'])
+                  if tag=='script' and a.get('src'): self.scripts.append(a['src'].split('?')[0])
+          p=P(); p.feed(Path('index.html').read_text())
+          dup=sorted({x for x in p.ids if p.ids.count(x)>1})
+          if dup: raise SystemExit('Duplicate DOM ids: '+', '.join(dup))
+          missing=[s for s in p.scripts if not s.startswith(('http://','https://')) and not Path(s).exists()]
+          if missing: raise SystemExit('Missing local scripts: '+', '.join(missing))
+          print(f'HTML OK: {len(p.ids)} ids, {len(p.scripts)} scripts')
+          PY

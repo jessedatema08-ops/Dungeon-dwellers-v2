@@ -1,0 +1,15 @@
+{
+  "name": "Dungeon Dwellers",
+  "short_name": "Dwellers",
+  "description": "Asynchronous D&D 5e 2024 campaigns with an AI Dungeon Master.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#07090c",
+  "theme_color": "#07090c",
+  "orientation": "any",
+  "icons": [
+    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}

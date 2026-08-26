@@ -1,0 +1,26 @@
+import { createClient } from 'npm:@supabase/supabase-js@2';
+const cors={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'authorization, x-client-info, apikey, content-type','Access-Control-Allow-Methods':'POST, OPTIONS'};
+const json=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers:{...cors,'Content-Type':'application/json'}});
+Deno.serve(async req=>{
+  if(req.method==='OPTIONS')return new Response('ok',{headers:cors});
+  if(req.method!=='POST')return json({ok:false,error:'POST required'},405);
+  const url=Deno.env.get('SUPABASE_URL')!,anon=Deno.env.get('SUPABASE_ANON_KEY')!,service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,auth=req.headers.get('Authorization')||'';
+  const userClient=createClient(url,anon,{global:{headers:{Authorization:auth}}}),admin=createClient(url,service);
+  const {data:uData,error:uErr}=await userClient.auth.getUser();const user=uData?.user;if(uErr||!user)return json({ok:false,error:'Authentication required'},401);
+  const p=await req.json().catch(()=>({}));const campaignId=String(p.campaignId||''),message=String(p.message||'').trim().slice(0,12000);
+  const requestedVisibility=p.visibility==='private'?'private':'party';const recipients=Array.isArray(p.recipientUserIds)?[...new Set(p.recipientUserIds.map(String))].slice(0,20):[];
+  if(!campaignId||!message)return json({ok:false,error:'campaignId and message are required'},400);
+  const {data:member}=await admin.from('campaign_members').select('role').eq('campaign_id',campaignId).eq('user_id',user.id).maybeSingle();
+  const {data:campaign}=await admin.from('campaigns').select('owner_id,paused,active_block,round_number,active_deadline,state').eq('id',campaignId).maybeSingle();
+  if(!campaign||(!member&&campaign.owner_id!==user.id))return json({ok:false,error:'Campaign access denied'},403);
+  if(requestedVisibility==='private'&&!recipients.length)return json({ok:false,error:'Choose at least one private recipient'},400);
+  if(recipients.length){const {data:valid}=await admin.from('campaign_members').select('user_id').eq('campaign_id',campaignId).in('user_id',recipients);const allowed=new Set((valid||[]).map((x:any)=>x.user_id));for(const id of recipients)if(!allowed.has(id)&&id!==campaign.owner_id)return json({ok:false,error:'A selected recipient is not in this campaign'},400);}
+  const channelContext=requestedVisibility==='private'?`This is a PRIVATE AI-DM channel. Adjudicate secret questions/actions normally and keep secret results private. Set responseVisibility=private.`:`This is the SHARED PARTY channel. Public actions and visible consequences belong here. Never reveal player-specific secrets.`;
+  const turnContext=campaign.paused?'Campaign progression is paused; answer rules/known-fact questions but do not resolve new in-world actions.':campaign.active_block?`Combat is active in block ${campaign.active_block}, round ${campaign.round_number||1}. Enforce the active player block.`:`The campaign is outside combat in scene turn ${campaign.state?.scene_turn_number||1}.`;
+  const chatRules=`${channelContext} ${turnContext}\nYou are the authoritative Dungeon Master used by the main gameplay flow. Rules questions and already-known facts are always allowed. In-world actions may be adjudicated here when they are not already represented by a structured V2 button. If a player-facing roll is needed, stop and return the exact roll request. Dungeon Dwellers V2 applies structured character mechanics through its action resolver; never duplicate an APP_RESOLVED_ACTION state change. Keep responses concise enough for chat.`;
+  const edge=await fetch(`${url}/functions/v1/dungeon-v2-ai`,{method:'POST',headers:{Authorization:auth,apikey:anon,'Content-Type':'application/json'},body:JSON.stringify({campaignId,message:`${chatRules}\n\nCHAT MESSAGE:\n${message}`,suppressChatPersist:true,responseVisibility:requestedVisibility})});
+  const text=await edge.text();let data:any;try{data=text?JSON.parse(text):{}}catch{data={}}if(!edge.ok||data?.ok===false)return json({ok:false,error:data?.error||text||`AI HTTP ${edge.status}`},502);
+  const narration=String(data?.narration||'').trim();const actualVisibility=requestedVisibility==='private'||data?.event?.responseVisibility==='private'?'private':'party';
+  if(narration){const dmRecipients=actualVisibility==='private'?(requestedVisibility==='private'?[...new Set([user.id,...recipients])]:[user.id]):[];const {data:row,error}=await admin.from('chat_messages').insert({campaign_id:campaignId,user_id:null,sender_kind:'dm',visibility:actualVisibility,recipient_user_ids:dmRecipients,body:narration,mentions:[],metadata:{source:'dungeon-chat-v2',channel:actualVisibility==='party'?'party':'direct',event:data?.event||null,chat_only:false}}).select('id').single();if(error)return json({ok:false,error:error.message},500);if(actualVisibility==='private')for(const target of dmRecipients)await admin.from('notification_outbox').insert({campaign_id:campaignId,user_id:target,kind:'mentions',title:'Private message from AI DM',body:narration.slice(0,180),data:{campaignId,chatMessageId:row?.id,direct:true},deliver_after:new Date().toISOString()});}
+  return json({ok:true,narration,event:{...(data?.event||{}),responseVisibility:actualVisibility}});
+});

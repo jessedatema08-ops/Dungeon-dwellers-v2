@@ -1,0 +1,57 @@
+/* Final home-screen layout. Loaded last to override earlier beta skins. */
+html,body{width:100%;margin:0;min-height:100%;overflow-x:hidden}
+body{overflow-y:auto!important}
+.app{padding:10px 10px 128px!important;max-width:980px;margin:0 auto}
+.topbar{height:auto!important;min-height:0!important;margin:0 0 8px!important;grid-template-columns:48px minmax(0,1fr) auto!important;align-items:start!important}
+.topbarRight{width:auto!important;min-width:0!important;display:grid!important;grid-template-columns:auto!important;justify-items:end!important;gap:6px!important}
+.turnTimer{width:auto!important;min-width:72px!important;margin:0!important;padding:7px 10px!important;align-items:center!important;text-align:center!important;justify-self:end!important}
+.timerLabel{width:100%;text-align:center!important}
+.turnTimer strong{width:100%;text-align:center!important;white-space:nowrap!important}
+.gearGhost{width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;max-width:42px!important;max-height:42px!important;aspect-ratio:1!important;border-radius:14px!important;padding:0!important;display:grid!important;place-items:center!important;justify-self:end!important;flex:none!important}
+.gearGhost .gearCore{width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important}
+main{overflow:visible!important}
+#scenePage.active{height:auto!important;min-height:0!important;overflow:visible!important;padding:0 0 18px!important}
+#scenePage.active .homeFrame{height:auto!important;min-height:0!important;overflow:visible!important;display:grid!important;grid-template-rows:auto!important;gap:8px!important;padding:0!important;margin:0!important}
+#scenePage.active .sceneHero{min-height:0!important;height:auto!important;overflow:hidden!important}
+#scenePage.active .homeQuickGrid,#scenePage.active .homeInfoGrid{min-height:0!important;height:auto!important}
+#scenePage.active .lowerGrid{display:block!important;min-height:0!important;height:auto!important;overflow:visible!important}
+#scenePage.active .lowerGrid>.dashboardCard{display:none!important}
+#scenePage.active .mapModule{display:grid!important;grid-template-rows:auto 260px!important;height:auto!important;min-height:0!important;padding:8px!important;gap:6px!important;border-radius:17px!important;overflow:hidden!important}
+#scenePage.active .mapModule>.eyebrow{display:flex!important;font-size:8px!important}
+#scenePage.active .battlemap{display:block!important;position:relative!important;width:100%!important;height:260px!important;min-height:260px!important;margin:0!important;border-radius:13px!important;overflow:hidden!important;border:1px solid rgba(207,166,94,.2)!important;background:#070a0e!important}
+#scenePage.active .battlemap .grid{display:block!important;position:absolute!important;inset:0!important;opacity:.22!important;background-image:linear-gradient(rgba(207,166,94,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(207,166,94,.16) 1px,transparent 1px)!important;background-size:28px 28px!important}
+#scenePage.active .battlemap .token{display:grid!important;z-index:8!important}
+#scenePage.active .battlemap .fog{display:block!important}
+#scenePage.active .masterMapCanvas{display:block!important;position:absolute!important;inset:0!important;min-width:100%!important;min-height:100%!important}
+#scenePage.active .mapBadge{display:none!important}
+
+/* Keep the fixed navigation clear of the final content. */
+.nav{top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;position:fixed!important;z-index:9999!important}
+#scenePage.active:after{content:"";display:block;height:104px;pointer-events:none}
+
+/* AI composer: keep the send control circular and centered. */
+#scenePage .prompt{display:flex!important;align-items:center!important;padding:4px 4px 4px 13px!important;min-height:46px!important}
+#scenePage .prompt input{min-height:38px!important;padding:8px 6px!important}
+#scenePage .prompt button[data-action="send-custom"]{width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important;max-width:38px!important;max-height:38px!important;flex:0 0 38px!important;aspect-ratio:1!important;border-radius:50%!important;padding:0!important;margin:0!important;display:grid!important;place-items:center!important;line-height:1!important;font-size:0!important;position:relative!important;overflow:visible!important}
+#scenePage .prompt button[data-action="send-custom"]:before{content:"→"!important;position:static!important;display:block!important;width:auto!important;height:auto!important;border:0!important;background:none!important;transform:none!important;color:var(--dd-gold2)!important;font:700 21px/1 Georgia,serif!important}
+#scenePage .prompt button[data-action="send-custom"]:after{display:none!important;content:none!important}
+
+/* Home shortcut buttons keep a consistent usable tap size. */
+#scenePage .quickNavCard{min-height:62px!important;cursor:pointer!important}
+#scenePage .continueTurnButton{min-height:44px!important;height:auto!important;cursor:pointer!important}
+#scenePage .pendingLink{cursor:pointer!important}
+
+@media(max-width:520px){
+  .app{padding:8px 8px 122px!important}
+  .topbar{grid-template-columns:44px minmax(0,1fr) auto!important}
+  .turnTimer{min-width:66px!important;padding:6px 8px!important}
+  .gearGhost{width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important;max-width:38px!important;max-height:38px!important}
+  #scenePage.active{height:auto!important;padding-bottom:14px!important}
+  #scenePage.active .homeFrame{grid-template-rows:auto!important;gap:7px!important}
+  #scenePage.active .mapModule{grid-template-rows:auto 230px!important}
+  #scenePage.active .battlemap{height:230px!important;min-height:230px!important}
+  #scenePage.active:after{height:100px}
+}
+@media(max-height:720px){
+  #scenePage.active .homeFrame{grid-template-rows:auto!important;gap:6px!important}
+}

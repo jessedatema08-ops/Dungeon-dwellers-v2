@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07090c">
+<meta name="description" content="Dungeon Dwellers V2 asynchronous D&D 5e 2024 campaign app">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="production.css?v=2">
+<link rel="stylesheet" href="responsive.css?v=1">
+<title>Dungeon Dwellers V2</title>
+</head>
+<body>
+<div id="authGate" class="authGate hidden"></div>
+<div id="lobby" class="lobby hidden"></div>
+<div id="modalRoot" class="hidden"></div>
+<div id="toast" class="toast"></div>
+<div class="appShell">
+<header class="topbar">
+  <button id="topMenu" class="iconBtn" aria-label="Campaigns"><svg viewBox="0 0 48 48"><path d="M10 14h28M10 24h28M10 34h28"/></svg></button>
+  <div class="brand"><h1><span>Dungeon</span><span>Dwellers</span></h1><div class="brandMeta"><i class="onlineDot"></i><span id="aiStatus">AI DM online</span></div><div class="campaignStrip"><span id="campaignName">Campaign</span> · <span id="chapterLabel">Chapter 1</span></div><div id="turnTimer" class="timerPill">Scene Turn</div></div>
+  <button id="topSettings" class="iconBtn" aria-label="Settings"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="7"/><path d="M24 6v6m0 24v6M6 24h6m24 0h6M11.3 11.3l4.2 4.2m17 17 4.2 4.2m0-25.4-4.2 4.2m-17 17-4.2 4.2"/></svg></button>
+</header>
+<main class="main">
+<section id="homePage" class="page active">
+  <article id="partyChatHome" class="card communityChatCard">
+    <div class="chatTop"><div><div class="eyebrow">Campaign Community</div><h2>Party Chat</h2><p id="communitySubtitle">Shared party channel · AI DM scenes and resolutions appear here</p></div><div class="chatTabs"><button id="ccParty" class="active">Party</button><button id="ccPrivate">DMs</button></div></div>
+    <div id="communityPeers" class="dmPeers hidden"></div><div id="communityFeed" class="communityFeed"><div class="communityEmpty">Loading party chat...</div></div><div id="communityTyping" class="communityTyping hidden">AI Dungeon Master is responding...</div>
+    <div class="communityComposer"><textarea id="communityInput" class="field" maxlength="4000" placeholder="Message the party..."></textarea><button id="communitySend" class="communitySendBtn" aria-label="Send message">›</button></div><div class="communityFoot"><span id="communityPrivacy">Everyone in the campaign can see this channel.</span><button id="communityAskDM">Ask AI DM here</button></div>
+  </article>
+  <span id="sceneTitle" hidden></span><span id="sceneText" hidden></span><span id="sceneNotice" hidden></span>
+  <div class="quickGrid">
+    <button class="quick" data-page="character"><span>Character</span></button>
+    <button class="quick" data-page="inventory"><span>Inventory</span></button>
+    <button class="quick" data-page="journal"><span>Journal</span></button>
+    <button class="quick" data-page="map"><span>Map</span></button>
+    <button class="quick" data-page="journal"><span>Quests</span></button>
+  </div>
+  <div class="dashboard"><article class="card miniCard"><div class="eyebrow">Current Character</div><h3 id="homeCharacterName">Adventurer</h3><p id="homeCharacterMeta">Character loading</p><strong id="homeHp">0 / 0 HP</strong><div class="meter"><i id="homeHpBar" style="width:0"></i></div></article><article class="card miniCard"><div class="eyebrow">Active Quest</div><h3 id="homeQuestTitle">No active quest</h3><p id="homeQuestText">Discovered quests appear here.</p></article><article class="card miniCard"><div class="eyebrow">Pending</div><h3>DM Reaction</h3><p id="pendingText">No reaction waiting.</p></article></div>
+  <article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Initiative</div><h2>Initiative Order</h2></div></div><div id="initiativeBlocks" class="initiativeBlocks"></div></article>
+  <article class="card sectionCard"><div class="eyebrow">Reactions</div><div id="reactionList" class="list"></div></article>
+  <article class="card sectionCard"><div class="eyebrow">Battle Map</div><div id="mapFrame" class="mapFrame"></div></article>
+</section>
+<section id="characterPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Character Sheet</div><h2>2024 Rules Character</h2></div><div class="buttonRow"><button id="characterEditBtn" class="goldBtn">Create / Edit</button><label class="ghostBtn" for="characterPdf">Import PDF</label><input id="characterPdf" type="file" accept="application/pdf" hidden></div></div><div id="characterContent"></div></article></section>
+<section id="inventoryPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Inventory</div><h2>Equipment & Items</h2></div></div><div id="inventoryContent"></div></article></section>
+<section id="journalPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Journal</div><h2>Quests, Knowledge & History</h2></div></div><div id="journalContent"></div></article></section>
+<section id="mapPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Maps</div><h2 id="mapName">Tactical Map</h2></div><div id="mapOwnerControls" class="buttonRow ownerOnly"><label class="ghostBtn" for="mapUpload">Optional Upload</label><input id="mapUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden></div></div><div id="mapFrameMapPage" class="mapFrame"></div><p class="statusLine">Tactical maps follow the AI Dungeon Master's public description of the current location. They use a 5-foot grid, interactive tokens, terrain, pathfinding, line of sight, cover, areas, and a North compass. Switch to World for discovered locations and routes.</p></article></section>
+<section id="campaignPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Campaign</div><h2>Party & Turn Structure</h2></div><button id="newCampaignBtn" class="ownerOnly ghostBtn">New Campaign</button></div><div id="campaignContent"></div></article><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Combat</div><h2>Initiative Order</h2></div></div><div id="initiativeBlocksCampaign" class="initiativeBlocks"></div><p class="statusLine">The AI DM starts combat when needed. Empty initiative groups are skipped automatically. In solo play, End My Turn advances through enemy actions and back to you without waiting for nonexistent players.</p></article></section>
+<section id="npcPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">NPCs</div><h2>Known Characters</h2></div></div><div id="npcContent"></div></article></section>
+<section id="morePage" class="page">
+  <article class="card sectionCard"><div class="eyebrow">Account</div><h2>Settings</h2><p>Signed in as <strong id="signedInAs"></strong></p><div class="buttonRow"><button id="notificationSettingsBtn" class="ghostBtn">Notification Settings</button><button id="enableNotificationsBtn" class="goldBtn">Enable Notifications</button><button id="signOutBtn" class="ghostBtn">Sign Out</button></div><p class="statusLine">Delivery mode: <strong id="notificationMode">immediate</strong>. Each player controls their own notification preferences.</p></article>
+  <article class="card sectionCard"><div class="eyebrow">Free Dice Roller</div><h2>Any Dice, Any Quantity</h2><p>The free roller is always available for table use. AI-requested gameplay rolls use a separate verified roll flow.</p><button id="freeDiceBtnInline" class="goldBtn" onclick="document.getElementById('freeDiceBtn').click()">Open Dice Roller</button></article>
+  <article id="ownerPanel" class="card sectionCard ownerOnly hidden"><div class="eyebrow">Campaign Owner</div><h2>Admin & Recovery</h2><p>These controls are for ownership, backup, and recovery. During play, the owner remains a normal player and the AI DM remains the DM.</p><div class="buttonRow"><button id="inviteBtn" class="goldBtn">Invite Player</button><button id="pauseBtn" class="ghostBtn">Pause / Resume</button><button id="rewindBtn" class="ghostBtn">Rewind</button><button id="correctBtn" class="dangerBtn">Correct State</button><button id="newCampaignBtnDuplicate" class="ghostBtn">Create Another Campaign</button></div></article>
+  <article class="card sectionCard"><div class="eyebrow">Rules & Systems</div><div class="list"><div class="listItem"><strong>D&D 5e 2024 Revised</strong><span>Structured character mechanics are resolved authoritatively before the AI narrates outcomes.</span></div><div class="listItem"><strong>Player-Owned Rolls</strong><span>Player-facing attacks, damage, saves, checks, initiative, death saves, healing, and other required dice are rolled through explicit app prompts.</span></div><div class="listItem"><strong>Reactions</strong><span>Legal reaction windows are shown to the affected player; the AI never chooses a player reaction.</span></div><div class="listItem"><strong>Persistent Campaign Memory</strong><span>Important NPC relationships, clues, factions, locations, promises, and consequences are kept in compact campaign memory.</span></div><div class="listItem"><strong>Campaign Safety</strong><span>Owners can export and restore complete V2 campaign backups.</span></div></div></article>
+</section>
+</main>
+<nav class="bottomNav" aria-label="Main navigation"><button data-page="home" class="active"><span>Home</span></button><button data-page="campaign"><span>Campaign</span></button><button id="freeDiceBtn" class="centerRoll" aria-label="Free dice roller"><span>d20</span></button><button data-page="npc"><span>NPCs</span></button><button data-page="more"><span>More</span></button></nav>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));</script>
+<script src="config.js?v=1"></script>
+<script src="supabase-client.js?v=2"></script>
+<script src="dice-engine.js?v=1"></script>
+<script src="ai-provider.js?v=1"></script>
+<script src="v2-provider.js?v=1"></script>
+<script src="v2-rules.js?v=2"></script>
+<script src="map-engine.js?v=4"></script>
+<script src="map-ai-integration.js?v=2"></script>
+<script src="campaign-manager.js?v=1"></script>
+<script src="production-app.js?v=2"></script>
+<script src="v2-runtime.js?v=1"></script>
+<script src="interaction-ui.js?v=4"></script>
+<script src="v2-initiative.js?v=1"></script>
+<script src="v2-combat.js?v=1"></script>
+<script src="v2-backup.js?v=1"></script>
+<script src="v2-character-ui.js?v=1"></script>
+<script src="navigation-layout.js?v=10"></script>
+<script src="community-chat.js?v=7"></script>
+<script src="character-system.js?v=8"></script>
+<script src="character-importer.js?v=2"></script>
+<script src="v2-release-fixes.js?v=1"></script>
+</body>
+</html>
