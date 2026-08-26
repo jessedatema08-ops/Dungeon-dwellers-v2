@@ -1,4 +1,4 @@
-const CACHE='dungeon-dwellers-v2-chat-ai-20260826';
+const CACHE='dungeon-dwellers-v2-authority-refresh-20260826';
 const ASSETS=['./','./index.html','./production.css','./responsive.css','./config.js','./supabase-client.js','./dice-engine.js','./rules-engine.js','./ai-provider.js','./v2-provider.js','./v2-rules.js','./map-engine.js','./map-ai-integration.js','./interaction-ui.js','./campaign-manager.js','./production-app.js','./v2-runtime.js','./v2-initiative.js','./v2-combat.js','./v2-backup.js','./v2-character-ui.js','./navigation-layout.js','./community-chat.js','./character-system.js','./character-importer.js','./v2-release-fixes.js','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
