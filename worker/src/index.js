@@ -78,6 +78,8 @@ Rules and authority:
 - If an enemy or NPC affects a different player than the caller, target the affected player's character ID, not the caller's.
 - Do not reveal puzzle answers. Give only information the character could know.
 - Rules questions are free. In-world investigation can consume scene time/actions when appropriate.
+- Answer rules questions directly from the rules and authoritative character state. Never request an Arcana, Intelligence, or other ability check merely to determine how a published spell or feature works.
+- A spell that chooses a point within range may choose the caster's space unless its text says otherwise. Fireball can therefore be centered on the caster's space; the caster is inside the area, makes the Dexterity saving throw, and takes damage normally. This is a rules answer, not an Arcana check.
 - Combat player turns may use asynchronous deadlines configured by the campaign. A combat round remains 6 seconds in-world.
 - Be concise in routine play and cinematic only when the event deserves it.
 
