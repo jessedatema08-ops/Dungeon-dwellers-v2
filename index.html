@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="production.css?v=2">
 <link rel="stylesheet" href="roll-effects.css?v=1">
 <link rel="stylesheet" href="responsive.css?v=1">
+<link rel="stylesheet" href="final-app.css?v=1">
 <title>Dungeon Dwellers V2</title>
 </head>
 <body>
@@ -21,14 +22,14 @@
 <header class="topbar">
   <button id="topMenu" class="iconBtn" aria-label="Campaigns"><svg viewBox="0 0 48 48"><path d="M10 14h28M10 24h28M10 34h28"/></svg></button>
   <div class="brand"><h1><span>Dungeon</span><span>Dwellers</span></h1><div class="brandMeta"><i class="onlineDot"></i><span id="aiStatus">AI DM online</span></div><div class="campaignStrip"><span id="campaignName">Campaign</span> · <span id="chapterLabel">Chapter 1</span></div><div id="turnTimer" class="timerPill">Scene Turn</div></div>
-  <button id="topSettings" class="iconBtn" aria-label="Settings"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="7"/><path d="M24 6v6m0 24v6M6 24h6m24 0h6M11.3 11.3l4.2 4.2m17 17 4.2 4.2m0-25.4-4.2 4.2m-17 17-4.2 4.2"/></svg></button>
+  <div class="topbarRight"><div id="playerTurnBadge" class="playerTurnBadge waiting" aria-live="polite"><span class="turnDot"></span><span id="playerTurnBadgeText">Waiting</span></div><button id="topSettings" class="iconBtn" aria-label="Settings"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="7"/><path d="M24 6v6m0 24v6M6 24h6m24 0h6M11.3 11.3l4.2 4.2m17 17 4.2 4.2m0-25.4-4.2 4.2m-17 17-4.2 4.2"/></svg></button></div>
 </header>
 <main class="main">
 <section id="homePage" class="page active">
   <article id="partyChatHome" class="card communityChatCard">
-    <div class="chatTop"><div><div class="eyebrow">Campaign Community</div><h2>Party Chat</h2><p id="communitySubtitle">Shared party channel · AI DM scenes and resolutions appear here</p></div><div class="chatTabs"><button id="ccParty" class="active">Party</button><button id="ccPrivate">DMs</button></div></div>
+    <div class="chatTop"><div><div class="eyebrow">Live Adventure</div><h2>The Scene</h2><p id="communitySubtitle">Players and the AI Dungeon Master share this scene</p></div><div class="chatTabs"><button id="ccParty" class="active">Party</button><button id="ccPrivate">Private</button></div></div>
     <div id="communityPeers" class="dmPeers hidden"></div><div id="communityFeed" class="communityFeed"><div class="communityEmpty">Loading party chat...</div></div><div id="communityTyping" class="communityTyping hidden">AI Dungeon Master is responding...</div>
-    <div class="communityComposer"><textarea id="communityInput" class="field" maxlength="4000" placeholder="Message the party..."></textarea><button id="communitySend" class="communitySendBtn" aria-label="Send message">›</button></div><div class="communityFoot"><span id="communityPrivacy">Everyone in the campaign can see this channel.</span><button id="communityAskDM">Ask AI DM here</button></div>
+    <div class="communityComposer"><textarea id="communityInput" class="field" maxlength="4000" placeholder="What do you do?"></textarea><button id="communitySend" class="communitySendBtn" aria-label="Send message">›</button></div><div class="communityFoot"><span id="communityPrivacy">Everyone in the campaign can see this scene.</span><button id="communityAskDM">Ask the DM</button></div>
   </article>
   <span id="sceneTitle" hidden></span><span id="sceneText" hidden></span><span id="sceneNotice" hidden></span>
   <div class="quickGrid">
@@ -81,5 +82,6 @@
 <script src="character-system.js?v=8"></script>
 <script src="character-importer.js?v=2"></script>
 <script src="v2-release-fixes.js?v=1"></script>
+<script src="final-app.js?v=1"></script>
 </body>
 </html>
