@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="production.css?v=2">
 <link rel="stylesheet" href="roll-effects.css?v=1">
 <link rel="stylesheet" href="responsive.css?v=1">
-<link rel="stylesheet" href="final-app.css?v=1">
+<link rel="stylesheet" href="final-app.css?v=2">
 <title>Dungeon Dwellers V2</title>
 </head>
 <body>
@@ -20,24 +20,27 @@
 <div id="toast" class="toast"></div>
 <div class="appShell">
 <header class="topbar">
-  <button id="topMenu" class="iconBtn" aria-label="Campaigns"><svg viewBox="0 0 48 48"><path d="M10 14h28M10 24h28M10 34h28"/></svg></button>
-  <div class="brand"><h1><span>Dungeon</span><span>Dwellers</span></h1><div class="brandMeta"><i class="onlineDot"></i><span id="aiStatus">AI DM online</span></div><div class="campaignStrip"><span id="campaignName">Campaign</span> · <span id="chapterLabel">Chapter 1</span></div><div id="turnTimer" class="timerPill">Scene Turn</div></div>
-  <div class="topbarRight"><div id="playerTurnBadge" class="playerTurnBadge waiting" aria-live="polite"><span class="turnDot"></span><span id="playerTurnBadgeText">Waiting</span></div><button id="topSettings" class="iconBtn" aria-label="Settings"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="7"/><path d="M24 6v6m0 24v6M6 24h6m24 0h6M11.3 11.3l4.2 4.2m17 17 4.2 4.2m0-25.4-4.2 4.2m-17 17-4.2 4.2"/></svg></button></div>
+  <button id="topMenu" class="brandMark" aria-label="Campaigns">DD</button>
+  <div class="brand"><h1>Dungeon Dwellers</h1><div class="brandMeta"><span id="campaignName">The Frozen North</span><span id="aiStatus" hidden>AI DM online</span><span id="chapterLabel" hidden>Chapter 1</span><span id="turnTimer" hidden>Scene Turn</span></div></div>
+  <nav class="desktopNav" aria-label="Primary"><button class="active" data-page="home">Adventure</button><button data-page="campaign">Party</button><button data-page="journal">Journal</button><button data-page="map">Map</button></nav>
+  <div class="topbarRight"><div id="playerTurnBadge" class="playerTurnBadge waiting" aria-live="polite"><span class="turnDot"></span><span id="playerTurnBadgeText">Waiting</span></div><button id="topSettings" class="profileButton" aria-label="Settings">SP</button></div>
 </header>
 <main class="main">
 <section id="homePage" class="page active">
+  <div class="adventureIntro"><div class="eyebrow" id="adventureClock">Your campaign is active</div><h2>Your adventure is waiting.</h2></div>
   <article id="partyChatHome" class="card communityChatCard">
-    <div class="chatTop"><div><div class="eyebrow">Live Adventure</div><h2>The Scene</h2><p id="communitySubtitle">Players and the AI Dungeon Master share this scene</p></div><div class="chatTabs"><button id="ccParty" class="active">Party</button><button id="ccPrivate">Private</button></div></div>
+    <div class="sceneVisual" aria-hidden="true"><div class="sceneSun"></div><div class="mountain mountainOne"></div><div class="mountain mountainTwo"></div><div class="mountain mountainThree"></div><div class="scenePath"></div></div>
+    <div class="sceneConversation"><div class="chatTop"><div><div class="eyebrow">Current Scene</div><h2 id="liveSceneHeading">The party gathers.</h2><p id="communitySubtitle">Players and the AI Dungeon Master share this scene</p></div><div class="chatTabs"><button id="ccParty" class="active">Party</button><button id="ccPrivate">Private</button></div></div>
     <div id="communityPeers" class="dmPeers hidden"></div><div id="communityFeed" class="communityFeed"><div class="communityEmpty">Loading party chat...</div></div><div id="communityTyping" class="communityTyping hidden">AI Dungeon Master is responding...</div>
     <div class="communityComposer"><textarea id="communityInput" class="field" maxlength="4000" placeholder="What do you do?"></textarea><button id="communitySend" class="communitySendBtn" aria-label="Send message">›</button></div><div class="communityFoot"><span id="communityPrivacy">Everyone in the campaign can see this scene.</span><button id="communityAskDM">Ask the DM</button></div>
+    </div>
   </article>
   <span id="sceneTitle" hidden></span><span id="sceneText" hidden></span><span id="sceneNotice" hidden></span>
   <div class="quickGrid">
-    <button class="quick" data-page="character"><span>Character</span></button>
-    <button class="quick" data-page="inventory"><span>Inventory</span></button>
-    <button class="quick" data-page="journal"><span>Journal</span></button>
-    <button class="quick" data-page="map"><span>Map</span></button>
-    <button class="quick" data-page="journal"><span>Quests</span></button>
+    <div class="quickHeading"><div class="eyebrow">Quick Start</div><h3>Choose your next move</h3></div>
+    <button id="primaryActionButton" class="quick" data-preserve-content="true"><span class="quickIcon">⚔</span><strong>Take an action</strong><small>Attack, cast, or interact</small></button>
+    <button id="quickRollButton" class="quick" data-preserve-content="true"><span class="quickIcon">◇</span><strong>Roll dice</strong><small>Open your dice tray</small></button>
+    <button class="quick" data-page="map" data-preserve-content="true"><span class="quickIcon">⌑</span><strong>View the map</strong><small>See tokens and locations</small></button>
   </div>
   <div class="dashboard"><article class="card miniCard"><div class="eyebrow">Current Character</div><h3 id="homeCharacterName">Adventurer</h3><p id="homeCharacterMeta">Character loading</p><strong id="homeHp">0 / 0 HP</strong><div class="meter"><i id="homeHpBar" style="width:0"></i></div></article><article class="card miniCard"><div class="eyebrow">Active Quest</div><h3 id="homeQuestTitle">No active quest</h3><p id="homeQuestText">Discovered quests appear here.</p></article><article class="card miniCard"><div class="eyebrow">Pending</div><h3>DM Reaction</h3><p id="pendingText">No reaction waiting.</p></article></div>
   <article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Initiative</div><h2>Initiative Order</h2></div></div><div id="initiativeBlocks" class="initiativeBlocks"></div></article>
