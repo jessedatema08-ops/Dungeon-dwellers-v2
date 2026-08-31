@@ -50,7 +50,7 @@
 <section id="characterPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Character Sheet</div><h2>2024 Rules Character</h2></div><div class="buttonRow"><button id="characterEditBtn" class="goldBtn">Create / Edit</button><label class="ghostBtn" for="characterPdf">Import PDF</label><input id="characterPdf" type="file" accept="application/pdf" hidden></div></div><div id="characterContent"></div></article></section>
 <section id="inventoryPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Inventory</div><h2>Equipment & Items</h2></div></div><div id="inventoryContent"></div></article></section>
 <section id="journalPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Journal</div><h2>Quests, Knowledge & History</h2></div></div><div id="journalContent"></div></article></section>
-<section id="mapPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Maps</div><h2 id="mapName">Tactical Map</h2></div><div id="mapOwnerControls" class="buttonRow ownerOnly"><label class="ghostBtn" for="mapUpload">Optional Upload</label><input id="mapUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden></div></div><div id="mapFrameMapPage" class="mapFrame"></div><p class="statusLine">Tactical maps follow the AI Dungeon Master's public description of the current location. They use a 5-foot grid, interactive tokens, terrain, pathfinding, line of sight, cover, areas, and a North compass. Switch to World for discovered locations and routes.</p></article></section>
+<section id="mapPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Maps</div><h2 id="mapName">Tactical Map</h2></div><div id="mapOwnerControls" class="buttonRow ownerOnly"><button id="mapGenerate" class="ghostBtn">New map</button><button id="mapStudio" class="ghostBtn">Map studio</button><label class="ghostBtn" for="mapUpload">Optional upload</label><input id="mapUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden></div></div><div id="mapFrameMapPage" class="mapFrame"></div><p class="statusLine">Tactical maps follow the AI Dungeon Master's public description of the current location. They use a 5-foot grid, interactive tokens, terrain, pathfinding, line of sight, cover, areas, and a North compass. Switch to World for discovered locations and routes.</p></article></section>
 <section id="campaignPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Campaign</div><h2>Party & Turn Structure</h2></div><button id="newCampaignBtn" class="ownerOnly ghostBtn">New Campaign</button></div><div id="campaignContent"></div></article><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">Combat</div><h2>Initiative Order</h2></div></div><div id="initiativeBlocksCampaign" class="initiativeBlocks"></div><p class="statusLine">The AI DM starts combat when needed. Empty initiative groups are skipped automatically. In solo play, End My Turn advances through enemy actions and back to you without waiting for nonexistent players.</p></article></section>
 <section id="npcPage" class="page"><article class="card sectionCard"><div class="sectionHead"><div><div class="eyebrow">NPCs</div><h2>Known Characters</h2></div></div><div id="npcContent"></div></article></section>
 <section id="morePage" class="page">
@@ -70,12 +70,12 @@
 <script src="ai-provider.js?v=1"></script>
 <script src="v2-provider.js?v=1"></script>
 <script src="v2-rules.js?v=2"></script>
-<script src="map-engine.js?v=5"></script>
+<script src="map-engine.js?v=6"></script>
 <script src="map-ai-integration.js?v=2"></script>
 <script src="campaign-manager.js?v=1"></script>
-<script src="production-app.js?v=5"></script>
+<script src="production-app.js?v=6"></script>
 <script src="v2-runtime.js?v=6"></script>
-<script src="interaction-ui.js?v=5"></script>
+<script src="interaction-ui.js?v=6"></script>
 <script src="v2-initiative.js?v=1"></script>
 <script src="v2-combat.js?v=2"></script>
 <script src="v2-backup.js?v=1"></script>
